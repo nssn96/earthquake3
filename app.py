@@ -78,6 +78,17 @@ def largestN(fields):
     res = cursor.fetchall()
     return res
 
+def dateRange(fields):
+    query=mainQuery
+    dbConnect()
+    cursor = conn.cursor()
+    query+=" where DATE(time)>='"+fields['From']+"' and Date(time)<='"+fields['To']+"' and mag>"+fields['Mag']
+    print(query)
+    cursor.execute(query)
+    res = cursor.fetchall()
+    conn.close()
+    return res
+
 
 
 
@@ -108,6 +119,30 @@ def search():
 
     end = time.time()
     print(end-start)
+    return render_template('index.html', data=result,time=end-start)
+
+@app.route('/date', methods=['GET','POST'])
+def date():
+    start = time.time()
+    if request.method=='POST':
+        dic={}
+        result=[]
+        for key,value in request.form.items():
+            if value!='':
+                dic[key] = value
+        
+        #print(dic)
+        if dic:
+            result = dateRange(dic)
+            if result==[]:
+                result==[]
+                flash ('No Such entries in table')
+        else:
+            flash('Please enter values in fields')
+        
+    end = time.time()
+    print(end-start)
+        
     return render_template('index.html', data=result,time=end-start)
 
 
