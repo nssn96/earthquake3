@@ -11,6 +11,98 @@
     <h1>This is the earthquake application</h1>
     <h2>Surya Narayanan N S</h2>
     <h2>UTA ID : 1001877873</h2>
+
+    <p><b>To search the largest N quakes occured</b></p>
+    <form action="/largest" method="post">
+        <table>
+            <tr>
+                <td><label for ="num">NUM(N) </label></td>
+                <td><input type="text" id="Num" name="Num"></td>
+                <td><input type="submit" value="SEARCH"></td>
+            </tr>
+        </table>
+    </form>
+
+</br> </br>
+
+
+{% if data %}
+
+{% if time%}
+<p>Time taken for the query to run : {{time}} secs</p>
+{% endif %}
+
+<table border=1>
+
+  <tr>
+      <th>time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>depth</th>
+      <th>magnitude</th>
+      <th>magType</th>
+      <th>nst</th>
+      <th>gap</th>
+      <th>dmin</th>
+      <th>rms</th>
+      <th>net</th>
+      <th>id</th>
+      <th>updatedTime</th>
+      <th>place</th>
+      <th>type</th>
+      <th>horizontalError</th>
+      <th>depthError</th>
+      <th>magError</th>
+      <th>magNst</th>
+      <th>status</th>
+      <th>locationSource</th>
+      <th>magSource</th>
+  </tr>
+
+  {% for value in data %}
+  <tr>
+      <td>{{ value[0] }}</td>
+      <td>{{ value[1] }}</td>
+      <td>{{ value[2] }}</td>
+      <td>{{ value[3] }}</td>
+      <td>{{ value[4] }}</td>
+      <td>{{ value[5] }}</td>
+      <td>{{ value[6] }}</td>
+      <td>{{ value[7] }}</td>
+      <td>{{ value[8] }}</td>
+      <td>{{ value[9] }}</td>
+      <td>{{ value[10] }}</td>
+      <td>{{ value[11] }}</td>
+      <td>{{ value[12] }}</td>
+      <td>{{ value[13] }}</td>
+      <td>{{ value[14] }}</td>
+      <td>{{ value[15] }}</td>
+      <td>{{ value[16] }}</td>
+      <td>{{ value[17] }}</td>
+      <td>{{ value[18] }}</td>
+      <td>{{ value[19] }}</td>
+      <td>{{ value[20] }}</td>
+      <td>{{ value[21] }}</td>
+  </tr>
+
+
+
+  {% endfor %}
+   
+
+</table>
+
+{% else %}
+
+{% with msg = get_flashed_messages() %}
+{% if msg %}
+   {% for info in msg %}
+      {{ info }}
+   {% endfor %}
+{% endif %}
+{% endwith %}
+
+{% endif %}
     
 </body>
 </html>
