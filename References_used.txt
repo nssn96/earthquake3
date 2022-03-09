@@ -1,0 +1,28 @@
+References used for the Assignment 3
+
+creating redis cache in azure
+1) https://www.youtube.com/watch?v=OPGrdzbUpcc
+
+2) https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-python-get-started
+
+3) execution time in python
+https://www.geeksforgeeks.org/how-to-check-the-execution-time-of-python-script/
+https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution
+
+4)
+https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-python-get-started#skip-to-the-code-on-github
+
+5)
+https://stackoverflow.com/questions/63074531/integrate-redis-with-flask-application-using-redis-py
+
+6)Redis application
+https://realpython.com/python-redis/#using-enterprise-redis-applications
+
+7)
+Redis list type
+https://www.youtube.com/watch?v=GBKDbTa0nU0&t=111s
+
+8) using redis with flask app
+https://stackoverflow.com/questions/63074531/integrate-redis-with-flask-application-using-redis-py
+
+9) https://redis.io/topics/data-types

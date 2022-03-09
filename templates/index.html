@@ -38,9 +38,61 @@
         </table>
     </form>
 
+    <p><b>To group the earthquakes by mag scale for past N days</b></p>
+    <form action="/groupby" method="post">
+        <table>
+            <tr>
+                <td><label for ="days">N days </label></td>
+                <td><input type="text" id="days" name="days"></td>
+                <td><input type="submit" value="SEARCH"></td>
+            </tr>
+        </table>
+
+    </form>
+
+    <p><b>To get the earthquakes around a distance from a  place</b></p>
+    <form action="/distance" method="post">
+        <table>
+            <tr>
+                <td><label for ="location">Location </label></td>
+                <td><input type="text" id="location" name="location"></td>
+                <td><label for ="distance">Distance in km </label></td>
+                <td><input type="text" id="distance" name="distance"></td>
+
+                <td><input type="submit" value="SEARCH"></td>
+            </tr>
+        </table> 
+
+         <!-- <p><b>To get the lat long of a place</b></p>
+    <form action="/latlong" method="post">
+        <table>
+            <tr>
+                <td><label for ="location">Location </label></td>
+                <td><input type="text" id="location" name="location"></td>
+                <td><input type="submit" value="SEARCH"></td>
+            </tr>
+        </table>
+
+    </form> -->
+
+
+    <!-- <p><b>To get the name of location from Lat,Long</b></p>
+    <form action="/placename" method="post">
+        <table>
+            <tr>
+                <td><label for ="lat">Latitude </label></td>
+                <td><input type="text" id="lat" name="lat"></td>
+                <td><label for ="long">Longitude </label></td>
+                <td><input type="text" id="long" name="long"></td>
+                <td><input type="submit" value="SEARCH"></td>
+            </tr>
+        </table>
+
+    </form> -->
+
 </br> </br>
 
-
+<!----------------------------------------------------------------for the other normal data--------->
 {% if data %}
 
 {% if time%}
@@ -118,6 +170,79 @@
 {% endwith %}
 
 {% endif %}
+<!----------------------------------------------------------------for the group data2--------->
+{% if data2 %}
+
+{% if time2%}
+<p>Time taken for the query to run : {{time2}} secs</p>
+{% endif %}
+
+<table border=1>
+    <tr>
+        <th>Magnitude_range</th>
+        <th>Number of occurences</th>
+    </tr>
+    {% for value in data2 %}
+    <tr>
+        <td>{{ value[0] }}</td>
+        <td>{{ value[1] }}</td>
+    </tr>
+
+    {% endfor %}
+</table>
+{% endif %}
+
+<!----------------------------------------------------------------for the distance data3-------->
+{% if data3 %}
+{% if time3%}
+<p>Time taken for the query to run : {{time3}} secs</p>
+{% endif %}
+
+      <table border=1>
+
+        <tr>
+            <th>time</th>
+            <th>latitude</th>
+            <th>longitude</th>
+            <th>depth</th>
+            <th>magnitude</th>
+            <th>magType</th>
+            <th>place</th>
+            <th>distance</th>
+        </tr>
+
+        {% for value in data3 %}
+        <tr>
+            <td>{{ value[0] }}</td>
+            <td>{{ value[1] }}</td>
+            <td>{{ value[2] }}</td>
+            <td>{{ value[3] }}</td>
+            <td>{{ value[4] }}</td>
+            <td>{{ value[5] }}</td>
+            <td>{{ value[6] }}</td>
+            <td>{{ value[7] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+        {% else %}
+
+        {% with msg = get_flashed_messages() %}
+        {% if msg %}
+           {% for info in msg %}
+              {{ info }}
+           {% endfor %}
+        {% endif %}
+     {% endwith %}
+        
+       
+        {% endif %}
+         
+      
+     
+
+
     
 </body>
 </html>
