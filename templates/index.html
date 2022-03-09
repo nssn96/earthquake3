@@ -20,12 +20,21 @@
                 <td><label for ="id2">max ID </label></td>
                 <td><input type="text" id="id2" name="id2"></td>
 
+                <td><label for ="limit">Number </label></td>
+                <td><input type="text" id="limit" name="limit"></td>
+                <td><label for ="code">code </label></td>
+                <td><input type="text" id="code" name="code"></td>
+
+                <td><label for ="times">times </label></td>
+                <td><input type="text" id="times" name="times"></td>
+
+
                 <td><input type="submit" value="SEARCH"></td>
             </tr>
         </table>
     </form>
 
-    <form action="/largest" method="post">
+    <!-- <form action="/largest" method="post">
         <table>
             <tr>
                 <td><label for ="limit">Number </label></td>
@@ -36,7 +45,7 @@
                 <td><input type="submit" value="SEARCH"></td>
             </tr>
         </table>
-    </form>
+    </form> -->
 
     <!-- <p><b>To search the quakes occured in a date range and required mag scale(>N)</b></p>
     <form action="/date" method="post">
@@ -152,75 +161,38 @@
 {% endwith %}
 
 {% endif %}
-<!----------------------------------------------------------------for the group data2--------->
+
 {% if data2 %}
 
-{% if time2%}
-<p>Time taken for the query to run : {{time2}} secs</p>
-{% endif %}
-
 <table border=1>
-    <tr>
-        <th>Magnitude_range</th>
-        <th>Number of occurences</th>
-    </tr>
-    {% for value in data2 %}
-    <tr>
-        <td>{{ value[0] }}</td>
-        <td>{{ value[1] }}</td>
-    </tr>
 
-    {% endfor %}
+  <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>pwd</th>
+      <th>code</th>
+      
+      
+  </tr>
+
+  {% for value in data2 %}
+  <tr>
+      <td>{{ value[0] }}</td>
+      <td>{{ value[1] }}</td>
+      <td>{{ value[2] }}</td>
+      <td>{{ value[3] }}</td>
+      
+  </tr>
+
+
+
+  {% endfor %}
+
+  {% endif %}
+   
+
 </table>
-{% endif %}
 
-<!----------------------------------------------------------------for the distance data3-------->
-{% if data3 %}
-{% if time3%}
-<p>Time taken for the query to run : {{time3}} secs</p>
-{% endif %}
-
-      <table border=1>
-
-        <tr>
-            <th>time</th>
-            <th>latitude</th>
-            <th>longitude</th>
-            <th>depth</th>
-            <th>magnitude</th>
-            <th>magType</th>
-            <th>place</th>
-            <th>distance</th>
-        </tr>
-
-        {% for value in data3 %}
-        <tr>
-            <td>{{ value[0] }}</td>
-            <td>{{ value[1] }}</td>
-            <td>{{ value[2] }}</td>
-            <td>{{ value[3] }}</td>
-            <td>{{ value[4] }}</td>
-            <td>{{ value[5] }}</td>
-            <td>{{ value[6] }}</td>
-            <td>{{ value[7] }}</td>
-        </tr>
-        {% endfor %}
-
-    </table>
-
-        {% else %}
-
-        {% with msg = get_flashed_messages() %}
-        {% if msg %}
-           {% for info in msg %}
-              {{ info }}
-           {% endfor %}
-        {% endif %}
-     {% endwith %}
-        
-       
-        {% endif %}
-         
       
      
 
