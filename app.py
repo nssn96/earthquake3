@@ -6,8 +6,11 @@ import mysql.connector as mysql
 from geopy.geocoders import Nominatim as nm
 from geopy.point import Point
 from math import radians, sin, cos,sqrt,atan2
-import decimal
+from decimal import Decimal
 import time
+import redis
+import datetime
+import ast
 
 
 app = Flask(__name__)
@@ -18,6 +21,14 @@ HOST='utacloud1.reclaimhosting.com'
 USER = 'sxn7873_surya'
 PASSWORD='Pn2E)^Gq&Dc]'
 DATABASE='sxn7873_adb'
+
+#REDIS connection details
+R_HOST='earthquake3.redis.cache.windows.net'
+R_PASSWORD='ab41AFIzZ4MkAyBuzw8Qo4rxtc1iaCWnsAzCaLwQaVY='
+
+r_cache = redis.StrictRedis(host=R_HOST,port=6380, db=0, password=R_PASSWORD, ssl=True)
+
+
 
 #A specific function to set up a db connection
 def dbConnect():
@@ -37,32 +48,6 @@ def allData():
 
 # the main select query
 mainQuery = "Select * from earthquake "
-
-def setProfile():
-    print('Inside the setProfile function')
-    setQuery = "SET  profiling = 1"
-    dbConnect()
-    cursor = conn.cursor()
-    cursor.execute(setQuery)
-    print("executed the set profile function")
-
-def showProfiles():
-    print('Inside the showProfiles function')
-    query= "SHOW PROFILES"
-    dbConnect()
-    cursor = conn.cursor()
-    cursor.execute(query)
-    res = cursor.fetchall()
-    print(res)
-
-def startTime():
-    start = time.time()
-    return start
-
-def endTime():
-    end = time.time()
-    return end
-
 
 def largestN(fields):
     query=mainQuery
@@ -102,14 +87,26 @@ def search():
     start = time.time()
     if request.method=='POST':
         dic={}
+        r_key=''
         for key,value in request.form.items():
             if value!='':
                 dic[key]=value
+                r_key+="_"+key+"_"+value
         
         print(dic)
-
+        print(r_key)
+        
         if dic:
-            result=largestN(dic)
+            #cache hit--> then we can get from redis cache
+            if r_cache.exists(r_key):
+                print('Present in cache')
+                result = eval(r_cache.get(r_key).decode("utf-8"))
+            #cache miss--> if not in redis cache,then DB call and add new one to redis cache
+            else:
+                print('Not in cache')
+                result=largestN(dic)
+                r_cache.set(r_key,str(result))
+
         else:
             result=[]
             flash('Please enter values in the field')
@@ -126,18 +123,31 @@ def date():
     start = time.time()
     if request.method=='POST':
         dic={}
+        r_key=''
         result=[]
         for key,value in request.form.items():
             if value!='':
                 dic[key] = value
+                r_key+="_"+key+"_"+value
         
         #print(dic)
+        print(r_key)
         if dic:
-            result = dateRange(dic)
+            #cache hit--> then we can get from redis cache
+            if r_cache.exists(r_key):
+                print('Present in cache')
+                result = eval(r_cache.get(r_key).decode("utf-8"))
+            #cache miss--> if not in redis cache,then DB call and add new one to redis cache
+            else:
+                print('Not in cache')
+                result = dateRange(dic)
+                r_cache.set(r_key,str(result))
+            
             if result==[]:
                 result==[]
                 flash ('No Such entries in table')
         else:
+            result=[]
             flash('Please enter values in fields')
         
     end = time.time()
