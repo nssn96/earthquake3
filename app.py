@@ -78,12 +78,12 @@ def allData():
 mainQuery = "Select * from earthquake "
 #1
 def largestN(fields):
-    query=mainQuery
+    query="select Name,id from ni where id>="+fields['id1']+"and id<="+fields['id2']+" order by id desc"
     dbConnect()
     cursor = conn.cursor()
-    for key,value in fields.items():
-        query+="order by mag desc LIMIT 0,"+value
-        #query+="where mag > "+value+" order by mag desc"
+    # for key,value in fields.items():
+    #     query+="order by mag desc LIMIT 0,"+value
+    #     #query+="where mag > "+value+" order by mag desc"
     print(query)
     
     cursor.execute(query)
@@ -197,6 +197,8 @@ def search():
                 print('Not in cache')
                 result=largestN(dic)
                 r_cache.set(r_key,str(result))
+            
+            print(result)
 
         else:
             result=[]
