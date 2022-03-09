@@ -11,7 +11,7 @@
     
     <h2>Surya Narayanan N S</h2>
     <h2>UTA ID : 1001877873</h2>
-    
+
     <form action="/largest" method="post">
         <table>
             <tr>
@@ -19,6 +19,19 @@
                 <td><input type="text" id="id1" name="id1"></td>
                 <td><label for ="id2">max ID </label></td>
                 <td><input type="text" id="id2" name="id2"></td>
+
+                <td><input type="submit" value="SEARCH"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/largest" method="post">
+        <table>
+            <tr>
+                <td><label for ="limit">Number </label></td>
+                <td><input type="text" id="limit" name="limit"></td>
+                <td><label for ="code">code </label></td>
+                <td><input type="text" id="code" name="code"></td>
 
                 <td><input type="submit" value="SEARCH"></td>
             </tr>
@@ -104,8 +117,11 @@
 <table border=1>
 
   <tr>
-      <th>Name</th>
       <th>ID</th>
+      <th>Name</th>
+      <th>pwd</th>
+      <th>code</th>
+      
       
   </tr>
 
@@ -113,6 +129,8 @@
   <tr>
       <td>{{ value[0] }}</td>
       <td>{{ value[1] }}</td>
+      <td>{{ value[2] }}</td>
+      <td>{{ value[3] }}</td>
       
   </tr>
 
