@@ -79,8 +79,8 @@ mainQuery = "Select * from earthquake "
 #1
 def largestN(fields):
     #query="select Name,id from ni where id>="+fields['id1']+" and id<="+fields['id2']+" order by id desc"
-    query = "select ni.id,Name,pwd,code from ni,di where ni.id>= "+fields['id1']+" and ni.id<= "+fields['id2']+" and ni.id=di.id order by id desc"
-    
+    #query = "select ni.id,Name,pwd,code from ni,di where ni.id>= "+fields['id1']+" and ni.id<= "+fields['id2']+" and ni.id=di.id order by id desc"
+    query="select ni.id,Name,pwd,code from ni,di where code="+fields['code']+" and ni.id=di.id order by id desc LIMIT 0,"+fields['limit']
     dbConnect()
     cursor = conn.cursor()
     # for key,value in fields.items():
