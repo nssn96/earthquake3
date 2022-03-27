@@ -78,40 +78,17 @@ def allData():
 mainQuery = "Select * from earthquake "
 #1
 def largestN(fields):
-
-    for i in range(int(fields['times'])):
-            
-        #query="select Name,id from ni where id>="+fields['id1']+" and id<="+fields['id2']+" order by id desc"
-        query1 = "select ni.id,Name,pwd,code from ni,di where ni.id>= "+fields['id1']+" and ni.id<= "+fields['id2']+" and ni.id=di.id order by id desc"
-        #query2="select ni.id,Name,pwd,code from ni,di where code="+fields['code']+" and ni.id=di.id order by id desc LIMIT 0,"+fields['limit']
-        dbConnect()
-        cursor = conn.cursor()
-        # for key,value in fields.items():
-        #     query+="order by mag desc LIMIT 0,"+value
-        #     #query+="where mag > "+value+" order by mag desc"
-        print(query1)
+    query=mainQuery
+    dbConnect()
+    cursor = conn.cursor()
+    for key,value in fields.items():
+        query+="order by mag desc LIMIT 0,"+value
+        #query+="where mag > "+value+" order by mag desc"
+    print(query)
     
-        
-        cursor.execute(query1)
-        res1 = cursor.fetchall()
-    return res1
-
-def largestN2(fields):
-    for i in range(int(fields['times'])):
-
-        #query="select Name,id from ni where id>="+fields['id1']+" and id<="+fields['id2']+" order by id desc"
-        #query1 = "select ni.id,Name,pwd,code from ni,di where ni.id>= "+fields['id1']+" and ni.id<= "+fields['id2']+" and ni.id=di.id order by id desc"
-        query2="select ni.id,Name,pwd,code from ni,di where code="+fields['code']+" and ni.id=di.id order by id desc LIMIT 0,"+fields['limit']
-        dbConnect()
-        cursor = conn.cursor()
-        # for key,value in fields.items():
-        #     query+="order by mag desc LIMIT 0,"+value
-        #     #query+="where mag > "+value+" order by mag desc"
-        #print(query1)
-        print(query2)
-        cursor.execute(query2)
-        res2 = cursor.fetchall()
-    return res2
+    cursor.execute(query)
+    res = cursor.fetchall()
+    return res
 #2
 def dateRange(fields):
     query=mainQuery
@@ -199,7 +176,6 @@ def index():
 @app.route('/largest',methods=['GET','POST'])
 def search():
     start = time.time()
-
     if request.method=='POST':
         dic={}
         r_key=''
@@ -212,29 +188,26 @@ def search():
         print(r_key)
         
         if dic:
-            # #cache hit--> then we can get from redis cache
-            # if r_cache.exists(r_key):
-            #     print('Present in cache')
-            #     result = eval(r_cache.get(r_key).decode("utf-8"))
-            # #cache miss--> if not in redis cache,then DB call and add new one to redis cache
-            # else:
-            print('Not in cache')
-            result1=largestN(dic)
-            result2=largestN2(dic)
-            #r_cache.set(r_key,str(result))
-            
-            #print(result)
+            #cache hit--> then we can get from redis cache
+            if r_cache.exists(r_key):
+                print('Present in cache')
+                result = eval(r_cache.get(r_key).decode("utf-8"))
+            #cache miss--> if not in redis cache,then DB call and add new one to redis cache
+            else:
+                print('Not in cache')
+                result=largestN(dic)
+                r_cache.set(r_key,str(result))
 
         else:
             result=[]
             flash('Please enter values in the field')
     
     else:
-        pass
+        result = allData()
 
     end = time.time()
     print(end-start)
-    return render_template('index.html', data=result1,data2=result2,time=end-start)
+    return render_template('index.html', data=result,time=end-start)
 
 @app.route('/date', methods=['GET','POST'])
 def date():
